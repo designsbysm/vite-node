@@ -1,26 +1,35 @@
+import FastifyMiddie from "@fastify/middie";
 import cors from "cors";
-import express, { Application, Request, Response } from "express";
+import Fastify from "fastify";
 
 import { serverPort } from "./config";
 
-const bootstrap = () => {
-  const app: Application = express();
+const bootstrap = async () => {
+  const app = Fastify();
 
-  app.use(
+  await app.register(FastifyMiddie);
+
+  await app.use(
     cors({
       origin: "*",
     })
   );
 
-  app.get("", (_req: Request, res: Response) => {
-    res.send("hello world");
-  });
+  app.get("/", () => ({ message: "hello world" }));
 
   if (import.meta.env.PROD) {
-    app.listen(serverPort, () => console.info(`listening on: ${serverPort}`));
+    return await app
+      .listen({ port: serverPort })
+      .then(() => app.server.address())
+      .then((address) => (typeof address === "string" ? address : address?.port))
+      .then((address) => console.info(`listening on: ${address}`))
+      .catch((err) => {
+        console.error("error starting server:", err);
+        process.exit(1);
+      });
   }
 
-  return app;
+  return await Promise.resolve(app);
 };
 
 export const viteNodeApp = bootstrap();

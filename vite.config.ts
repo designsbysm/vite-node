@@ -12,10 +12,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       ...VitePluginNode({
-        // Nodejs native Request adapter
-        // currently this plugin support 'express', 'nest', 'koa' and 'fastify' out of box,
-        // you can also pass a function if you are using other frameworks, see Custom Adapter section
-        adapter: "express",
+        adapter: "fastify",
         appPath: "./src/index.ts",
       }),
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
