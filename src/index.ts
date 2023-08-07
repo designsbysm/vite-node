@@ -2,7 +2,7 @@ import FastifyMiddie from "@fastify/middie";
 import cors from "cors";
 import Fastify from "fastify";
 
-import { serverPort } from "./config";
+import { serverPort } from "@/config";
 
 const bootstrap = async () => {
   const app = Fastify();

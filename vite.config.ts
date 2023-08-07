@@ -1,5 +1,5 @@
+import { fileURLToPath, URL } from "node:url";
 import { defineConfig, loadEnv, UserConfig } from "vite";
-import EnvironmentPlugin from "vite-plugin-environment";
 import { VitePluginNode } from "vite-plugin-node";
 
 export default defineConfig(({ mode }) => {
@@ -18,5 +18,10 @@ export default defineConfig(({ mode }) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       EnvironmentPlugin("all"),
     ],
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    },
   };
 }) as UserConfig;
